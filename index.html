@@ -2,19 +2,22 @@
 <html>
 <head>
 	<title>Pirate Bartender</title>
-	 <meta charset="utf-8">	 
+	 <meta charset="utf-8">	
+	 <link rel="stylesheet" href="css/style.css"/>
+	 <link href="https://fonts.googleapis.com/css?family=Yatra+One" rel="stylesheet">
 </head>
 <body>
-	<h1>Ye Favorite Pirate Bartender</h1>
+	<h1 class="title mainTitle">Ye Favorite Pirate Bartender</h1>
+	<h2 class="title subTitle">Answer me questions 'n I'll create a drink fer y</h2>
 	<div class="questionContainer">
 		<div class="question"></div>
 		<button class="yesBtn">Yup</button>
 		<button class="noBtn">Nope</button>
 	</div>
-	<div class="drinkContainer" style="display: none;">
+	<div class="drinkContainer">
 		<h1>Here be ye drink!</h1>
 		<ul class="drinkIngredients"></ul>
-		<button>Gift me another drink!</button>
+		<button class="otherDrinkBtn">Gift me another drink!</button>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="app.js"></script>

@@ -20,7 +20,6 @@ var Bartender= function(pirate){
 
 //<-- method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink -->
 Bartender.prototype.createDrink= function(ingredientsPreference){
-	console.log("ingredients input", ingredientsPreference)
 	var drink= ingredientsPreference.map(function(item){
 		return item[Math.floor(Math.random()*item.length)]
 		console.log(drink)
@@ -113,9 +112,7 @@ var renderDrink= function(element){
 $(".yesBtn").on("click", function(event){
 	event.preventDefault()
 	state["yesBtn"]= true
-	console.log("yes button selected", state)
 	var index= questionIndex()
-	console.log("index", index)
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 	chosenIngredients(state,presentQuestion(index-1))
@@ -131,7 +128,6 @@ $(".yesBtn").on("click", function(event){
 // <-- event listner for no button. Renders the next question -->
 $(".noBtn").on("click", function(event){
 	event.preventDefault()
-	console.log("this is running")
 	var index= questionIndex()
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
@@ -144,7 +140,6 @@ $(".drinkContainer").on("click","button", function(){
     window.counter=-1
     state.ingredientsPreference=[]
     var index= questionIndex()
-    console.log("index re-start", index)
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 })
