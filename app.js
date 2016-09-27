@@ -12,6 +12,20 @@ var Pantry= function(availableIngredients){
 	this.availableIngredients = availableIngredients
 }
 
+var Bartender= function(pirate){
+	this.pirate= pirate
+}
+
+// <-- Object methods -->
+Bartender.prototype.createDrink= function(ingredientsPreference){
+	console.log("ingredients input", ingredientsPreference)
+	var drink= ingredientsPreference.map(function(item){
+		return item[Math.floor(Math.random()*item.length)]
+		console.log(drink)
+	})	
+	return drink
+}
+
 //<-- Objects -->
 
 // <-- Question Objects -->
@@ -31,7 +45,10 @@ var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "ch
 // <-- Pantry objects -->
 var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients])
 
-//<-- State object -->
+// Bartender object
+var theBartender= Object.create(Bartender.prototype)
+
+//<-- State object which saves the user's preferences -->
 
 var state= {
 	yesStrong: false,
@@ -59,6 +76,12 @@ var chosenIngredients = function(state, chosen){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
 	}
 }
+
+
+
+
+
+
 
 
 
