@@ -77,6 +77,49 @@ var chosenIngredients = function(state, chosen){
 	}
 }
 
+// <-- Function to create an array of questions and determine the current question -->
+var presentQuestion = function(questionIndex){
+    window.arrayQuestions = []
+    window.arrayQuestions.push(question1.question, question2.question, question3.question, question4.question, question5.question)
+    window.currentQuestion = arrayQuestions[questionIndex]
+}
+
+// <-- Counter function to keep track of question number -->
+var questionIndex = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+
+// <-- render content in the DOM -->
+
+var renderQuestion= function(state, element){
+	var questionHTML= "<h2>" + window.currentQuestion + "</h2>"
+	element.html(questionHTML)
+}
+
+// <-- jQuery functions to modify the DOM -->
+
+$(".yesBtn").on("click", function(event){
+	event.preventDefault()
+	console.log("this is running")
+	var index= questionIndex()
+	presentQuestion(index)
+	renderQuestion(state, $(".question"))
+})
+
+$(".noBtn").on("click", function(event){
+	event.preventDefault()
+	console.log("this is running")
+	var index= questionIndex()
+	presentQuestion(index)
+	renderQuestion(state, $(".question"))
+})
+
+$(document).ready(function(){
+	presentQuestion(0)
+	renderQuestion(state, $(".question"))
+})
+
 
 
 
