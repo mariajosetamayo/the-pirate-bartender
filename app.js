@@ -17,6 +17,8 @@ var Bartender= function(pirate){
 }
 
 // <-- Object methods -->
+
+//<-- method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink -->
 Bartender.prototype.createDrink= function(ingredientsPreference){
 	console.log("ingredients input", ingredientsPreference)
 	var drink= ingredientsPreference.map(function(item){
@@ -45,34 +47,33 @@ var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "ch
 // <-- Pantry objects -->
 var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients])
 
-// Bartender object
-var theBartender= Object.create(Bartender.prototype)
+//<-- Bartender object -->
+var pirateBartender= Object.create(Bartender.prototype)
 
 //<-- State object which saves the user's preferences -->
 
 var state= {
-	yesStrong: false,
-	yesSalty: false,
-	yesBitter: false,
-	yesSweet: false,
-	yesFruity: false,
+	yesBtn: false,
 	ingredientsPreference:[],
 }
 
-//<-- state modification functions -->
+//<-- State modification functions -->
 
-var chosenIngredients = function(state, chosen){
-	if(chosen === state.yesStrong){
+//<-- function that saves the ingredients preferred by the user in the state object -->
+var chosenIngredients = function(state,currentQuestion){
+	var currentQuestion= window.currentQuestion
+	var questionsArray= window.arrayQuestions
+	if((currentQuestion===questionsArray[0]) && (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[0])
-	}else if(chosen === state.yesSalty){
+	}else if((currentQuestion===questionsArray[1])&& (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[1])
-	}else if(chosen === state.yesBitter){
+	}else if((currentQuestion===questionsArray[2])&& (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[2])
 	}
-	else if(chosen === state.yesSweet){
+	else if((currentQuestion===questionsArray[3])&& (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[3])
 	}
-	else if(chosen === state.yesFruity){
+	else if((currentQuestion===questionsArray[4])&& (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
 	}
 }
@@ -86,27 +87,48 @@ var presentQuestion = function(questionIndex){
 
 // <-- Counter function to keep track of question number -->
 var questionIndex = (function () {
-    var counter = 0;
+    window.counter = -1;
     return function () {return counter += 1;}
 })();
 
-// <-- render content in the DOM -->
+// <-- Render content in the DOM -->
 
-var renderQuestion= function(state, element){
-	var questionHTML= "<h2>" + window.currentQuestion + "</h2>"
+// <-- function to render the current question in the DOM -->
+var renderQuestion= function(state,element){
+	var questionHTML= "<h2>"+window.currentQuestion+"</h2>"
 	element.html(questionHTML)
+}
+
+// <-- function to render the drink created by the bartender in the DOM -->
+var renderDrink= function(element){
+	var drinkHTML= window.pirateDrink.map(function(item){
+        return "<li>"+item+"</li>"
+    })
+	element.html(drinkHTML)
 }
 
 // <-- jQuery functions to modify the DOM -->
 
+// <-- event listner for yes button. Calls functions and methods to create a drink and renders content into the DOM  -->
 $(".yesBtn").on("click", function(event){
 	event.preventDefault()
-	console.log("this is running")
+	state["yesBtn"]= true
+	console.log("yes button selected", state)
 	var index= questionIndex()
+	console.log("index", index)
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
+	chosenIngredients(state,presentQuestion(index-1))
+	window.pirateDrink = pirateBartender.createDrink(state.ingredientsPreference)
+	console.log("drink", pirateDrink)
+	if(index===window.arrayQuestions.length){
+		$(".questionContainer").hide()
+        $(".drinkContainer").show()
+        renderDrink($(".drinkIngredients"))
+	}
 })
 
+// <-- event listner for no button. Renders the next question -->
 $(".noBtn").on("click", function(event){
 	event.preventDefault()
 	console.log("this is running")
@@ -115,8 +137,22 @@ $(".noBtn").on("click", function(event){
 	renderQuestion(state, $(".question"))
 })
 
+// <-- event listner for starting again/creating a new drink -->
+$(".drinkContainer").on("click","button", function(){
+	$(".questionContainer").show()
+    $(".drinkContainer").hide()
+    window.counter=-1
+    state.ingredientsPreference=[]
+    var index= questionIndex()
+    console.log("index re-start", index)
+	presentQuestion(index)
+	renderQuestion(state, $(".question"))
+})
+
+// <-- loads first question in the DOM -->
 $(document).ready(function(){
-	presentQuestion(0)
+	var index= questionIndex()
+	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 })
 
