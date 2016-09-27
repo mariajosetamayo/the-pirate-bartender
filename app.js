@@ -5,11 +5,11 @@ var Question= function(question){
 }
 
 var Ingredients= function(ingredients){
-	this.ingredients= []
+	this.ingredients= ingredients
 }
 
 var Pantry= function(availableIngredients){
-	this.availableIngredients = []
+	this.availableIngredients = availableIngredients
 }
 
 //<-- Objects -->
@@ -22,13 +22,24 @@ var question4= new Question("Would ye like a bit of sweetness with yer poison?")
 var question5= new Question("Are ye one for a fruity finish?")
 
 // <-- Ingredients objects -->
-var strongIngredients= new ingredients(["glug of rum", "slug of whisky", "splash of gin"])
-var saltyIngredients= new ingredients(["olive on a stick", "salt-dusted rim", "rasher of bacon"])
-var bitterIngredients= new ingredients(["shake of bitters", "splash of tonic", "twist of lemon peel"])
-var sweetIngredients= new ingredients(["sugar cube", "spoonful of honey", "splash of cola"])
-var fruityIngredients= new ingredients(["slice of orange", "dash of cassis", "cherry on top"])
+var strongIngredients= new Ingredients(["glug of rum", "slug of whisky", "splash of gin"])
+var saltyIngredients= new Ingredients(["olive on a stick", "salt-dusted rim", "rasher of bacon"])
+var bitterIngredients= new Ingredients(["shake of bitters", "splash of tonic", "twist of lemon peel"])
+var sweetIngredients= new Ingredients(["sugar cube", "spoonful of honey", "splash of cola"])
+var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "cherry on top"])
 
 // <-- Pantry objects -->
-var pantryIngredients= new availableIngredients(["glug of rum", "slug of whisky", "splash of gin","olive on a stick", "salt-dusted rim", "rasher of bacon","shake of bitters", "splash of tonic", "twist of lemon peel","sugar cube", "spoonful of honey", "splash of cola","slice of orange", "dash of cassis", "cherry on top"])
+var pantryIngredients= new Pantry([strongIngredients, saltyIngredients, bitterIngredients, sweetIngredients, fruityIngredients])
+
+//<-- State object -->
+
+var userPreferences= {
+	yesStrongDrinks: false,
+	yesSaltyTang: false,
+	yesBitter: false,
+	yesSweet: false,
+	yesFruity: false,
+	ingredientsPreference:[],
+}
 
 
