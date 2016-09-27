@@ -29,17 +29,37 @@ var sweetIngredients= new Ingredients(["sugar cube", "spoonful of honey", "splas
 var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "cherry on top"])
 
 // <-- Pantry objects -->
-var pantryIngredients= new Pantry([strongIngredients, saltyIngredients, bitterIngredients, sweetIngredients, fruityIngredients])
+var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients])
 
 //<-- State object -->
 
-var userPreferences= {
-	yesStrongDrinks: false,
-	yesSaltyTang: false,
+var state= {
+	yesStrong: false,
+	yesSalty: false,
 	yesBitter: false,
 	yesSweet: false,
 	yesFruity: false,
 	ingredientsPreference:[],
 }
+
+//<-- state modification functions -->
+
+var chosenIngredients = function(state, chosen){
+	if(chosen === state.yesStrong){
+		state.ingredientsPreference.push(pantryIngredients.availableIngredients[0])
+	}else if(chosen === state.yesSalty){
+		state.ingredientsPreference.push(pantryIngredients.availableIngredients[1])
+	}else if(chosen === state.yesBitter){
+		state.ingredientsPreference.push(pantryIngredients.availableIngredients[2])
+	}
+	else if(chosen === state.yesSweet){
+		state.ingredientsPreference.push(pantryIngredients.availableIngredients[3])
+	}
+	else if(chosen === state.yesFruity){
+		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
+	}
+}
+
+
 
 
