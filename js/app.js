@@ -60,13 +60,10 @@ var cocktailNames = {
 
 // method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink
 Bartender.prototype.createDrink= function(state){
-	console.log("Making drink")
-
 	var drink = state.userPreferences.map(function(index){
 		var ingredientCategory = pantryIngredients[index] // ["slice of orange", "dash of cassis", "cherry on top"]
 		return ingredientCategory[Math.floor(Math.random()*ingredientCategory.length)]
 	})
-	console.log(drink);
 	return drink
 }
 
@@ -94,8 +91,8 @@ var renderCurrentQuestion = function (){
 }
 
 // function to render the drink created by the bartender in the DOM
-var renderDrink = function(){
-	var drinkHTML = window.pirateDrink.map(function(item){
+var renderDrink = function(pirateDrink){
+	var drinkHTML = pirateDrink.map(function(item){
 		return "<li>"+item+"</li>"
 	})
 	$(".drinkIngredients").html(drinkHTML)
@@ -149,6 +146,9 @@ userChosePreference = function(){
 var makeDrink = function(){
 	var pirateDrink = pirateBartender.createDrink(state)
 	var cocktailRandomName = cocktailNameCreator(cocktailNames.nameAdjective(), cocktailNames.nameNoun())
+	console.log("Making drink")
+	console.log(pirateDrink)
+	console.log(cocktailRandomName)
 	showResults()
 	renderDrink(pirateDrink)
 	renderDrinkName(cocktailRandomName)
