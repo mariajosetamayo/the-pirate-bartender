@@ -1,162 +1,152 @@
-//<-- Object constructors -->
-
-var Question= function(question){
-	this.question = question
-}
-
-var Ingredients= function(ingredients){
-	this.ingredients= ingredients
-}
-
-var Pantry= function(availableIngredients){
-	this.availableIngredients = availableIngredients
-}
-
 var Bartender= function(pirate){
-	this.pirate= pirate
+	this.pirate = pirate
 }
 
-// <-- Object methods -->
 
-//<-- method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink -->
-Bartender.prototype.createDrink= function(ingredientsPreference){
-	var drink= ingredientsPreference.map(function(item){
-		return item[Math.floor(Math.random()*item.length)]
-		console.log(drink)
-	})	
+////////// 1. Global Objects //////////
+
+// State object which saves the user's preferences
+var state= {
+	currentQuestionIndex:0 ,
+	userPreferences: []
+}
+
+var arrayQuestions = [
+	"Do ye like yer drinks strong?",
+	"Do ye like it with a salty tang?",
+	"Are ye a lubber who likes it bitter?",
+	"Would ye like a bit of sweetness with yer poison?",
+	"Are ye one for a fruity finish?"
+]
+
+// Ingredients objects
+var strongIngredients = ["glug of rum", "slug of whisky", "splash of gin"];
+var saltyIngredients = ["olive on a stick", "salt-dusted rim", "rasher of bacon"];
+var bitterIngredients = ["shake of bitters", "splash of tonic", "twist of lemon peel"];
+var sweetIngredients = ["sugar cube", "spoonful of honey", "splash of cola"];
+var fruityIngredients = ["slice of orange", "dash of cassis", "cherry on top"];
+
+// Pantry objects
+var pantryIngredients = [strongIngredients, saltyIngredients, bitterIngredients, sweetIngredients, fruityIngredients];
+
+// Bartender object
+var pirateBartender= Object.create(Bartender.prototype)
+
+// cocktail names object
+var cocktailNames = {
+	adjectives: ["Fluffy", "Salty", "Illegal", "Infamous", "Ferocious", "Vicious", "Ruthless"],
+	nouns: ["Vessel", "Mate", "Cannon", "Ship", "Maggot", "Ruffian", "Parrot"],
+	getRandomAdjective: function(){
+		return cocktailNames.adjectives[Math.floor(Math.random()*cocktailNames.adjectives.length)]
+	},
+	getRandomNoun: function(){
+		return cocktailNames.nouns[Math.floor(Math.random()*cocktailNames.nouns.length)]
+	},
+}
+
+////////// 2. Bartender functions //////////
+
+// method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink
+Bartender.prototype.createDrink= function(state){
+	if (state.userPreferences.length===0) return ["No ingredients for you"]
+
+	var drink = state.userPreferences.map(function(index){
+		var ingredientCategory = pantryIngredients[index] // ["slice of orange", "dash of cassis", "cherry on top"]
+		return ingredientCategory[Math.floor(Math.random()*ingredientCategory.length)]
+	})
 	return drink
 }
 
-//<-- Objects -->
-
-// <-- Question Objects -->
-var question1= new Question("Do ye like yer drinks strong?")
-var question2= new Question("Do ye like it with a salty tang?")
-var question3= new Question("Are ye a lubber who likes it bitter?")
-var question4= new Question("Would ye like a bit of sweetness with yer poison?")
-var question5= new Question("Are ye one for a fruity finish?")
-
-// <-- Ingredients objects -->
-var strongIngredients= new Ingredients(["glug of rum", "slug of whisky", "splash of gin"])
-var saltyIngredients= new Ingredients(["olive on a stick", "salt-dusted rim", "rasher of bacon"])
-var bitterIngredients= new Ingredients(["shake of bitters", "splash of tonic", "twist of lemon peel"])
-var sweetIngredients= new Ingredients(["sugar cube", "spoonful of honey", "splash of cola"])
-var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "cherry on top"])
-
-// <-- Pantry objects -->
-var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients])
-
-//<-- Bartender object -->
-var pirateBartender= Object.create(Bartender.prototype)
-
-//<-- State object which saves the user's preferences -->
-
-var state= {
-	yesBtn: false,
-	ingredientsPreference:[],
+// Function that creates a name for cocktails
+var cocktailNameCreator = function(){
+	return cocktailNames.getRandomAdjective() + " " + cocktailNames.getRandomNoun();
 }
 
-//<-- State modification functions -->
-
-//<-- function that saves the ingredients preferred by the user in the state object -->
-var chosenIngredients = function(state,currentQuestion){
-	var currentQuestion= window.currentQuestion
-	var questionsArray= window.arrayQuestions
-	if((currentQuestion===questionsArray[0]) && (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[0])
-	}else if((currentQuestion===questionsArray[1])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[1])
-	}else if((currentQuestion===questionsArray[2])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[2])
-	}
-	else if((currentQuestion===questionsArray[3])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[3])
-	}
-	else if((currentQuestion===questionsArray[4])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
-	}
+// Function to create an array of questions and determine the current question
+var currentQuestion = function(state){
+	return arrayQuestions[state.currentQuestionIndex];
 }
 
-// <-- Function to create an array of questions and determine the current question -->
-var presentQuestion = function(questionIndex){
-    window.arrayQuestions = []
-    window.arrayQuestions.push(question1.question, question2.question, question3.question, question4.question, question5.question)
-    window.currentQuestion = arrayQuestions[questionIndex]
+
+////////// 2. Render content in the DOM //////////
+
+// function to render the current question in the DOM
+var renderCurrentQuestion = function (){
+	var question = currentQuestion(state)
+	var questionHTML= "<h2>"+question+"</h2>"
+	$(".question").html(questionHTML)
 }
 
-// <-- Counter function to keep track of question number -->
-var questionIndex = (function () {
-    window.counter = -1;
-    return function () {return counter += 1;}
-})();
-
-// <-- Render content in the DOM -->
-
-// <-- function to render the current question in the DOM -->
-var renderQuestion= function(state,element){
-	var questionHTML= "<h2>"+window.currentQuestion+"</h2>"
-	element.html(questionHTML)
+// function to render the drink created by the bartender in the DOM
+var renderDrink = function(pirateDrink){
+	var drinkHTML = pirateDrink.map(function(item){
+		return "<li>"+item+"</li>"
+	})
+	$(".drinkIngredients").html(drinkHTML)
 }
 
-// <-- function to render the drink created by the bartender in the DOM -->
-var renderDrink= function(element){
-	var drinkHTML= window.pirateDrink.map(function(item){
-        return "<li>"+item+"</li>"
-    })
-	element.html(drinkHTML)
+// Function to render the drink's name
+var renderDrinkName= function(cocktailRandomName){
+	var drinkNameHTML= "<h2>The "+cocktailRandomName+"</h2>"
+	$(".drinkName").html(drinkNameHTML)
 }
 
-// <-- jQuery functions to modify the DOM -->
+// Function to render error
+var renderError= function(element){
+	var errorHTML= "<h2>So ye got no scurvy pirate taste! Goodby!</h2>"
+	element.html(errorHTML)
+}
 
-// <-- event listner for yes button. Calls functions and methods to create a drink and renders content into the DOM  -->
+// jQuery functions to modify the DOM
+var showResults= function(){
+	$(".questionContainer").hide()
+	$(".drinkContainer").show()
+}
+var showQuestions= function(){
+	$(".questionContainer").show()
+	$(".drinkContainer").hide()
+}
+
+// Event listner for yes button. Calls functions and methods to create a drink and renders content into the DOM
 $(".yesBtn").on("click", function(event){
-	event.preventDefault()
-	state["yesBtn"]= true
-	var index= questionIndex()
-	presentQuestion(index)
-	renderQuestion(state, $(".question"))
-	chosenIngredients(state,presentQuestion(index-1))
-	window.pirateDrink = pirateBartender.createDrink(state.ingredientsPreference)
-	console.log("drink", pirateDrink)
-	if(index===window.arrayQuestions.length){
-		$(".questionContainer").hide()
-        $(".drinkContainer").show()
-        renderDrink($(".drinkIngredients"))
-	}
+	event.preventDefault();
+	// Guardar los indexes de las categorias que el usuario eligio en un array.
+	state.userPreferences.push(state.currentQuestionIndex);
+	userChosePreference();
 })
-
-// <-- event listner for no button. Renders the next question -->
+// event listner for no button. Renders the next question
 $(".noBtn").on("click", function(event){
 	event.preventDefault()
-	var index= questionIndex()
-	presentQuestion(index)
-	renderQuestion(state, $(".question"))
+	userChosePreference();
 })
 
-// <-- event listner for starting again/creating a new drink -->
+userChosePreference = function(){
+	state.currentQuestionIndex++;
+	if(state.currentQuestionIndex < arrayQuestions.length){
+		renderCurrentQuestion(state)
+	}
+	if(state.currentQuestionIndex === arrayQuestions.length){
+		makeDrink()
+	}
+}
+
+var makeDrink = function(){
+	var pirateDrink = pirateBartender.createDrink(state)
+	var cocktailRandomName = cocktailNameCreator()
+	showResults()
+	renderDrink(pirateDrink)
+	renderDrinkName(cocktailRandomName)
+}
+
+// event listner for starting again/creating a new drink
 $(".drinkContainer").on("click","button", function(){
-	$(".questionContainer").show()
-    $(".drinkContainer").hide()
-    window.counter=-1
-    state.ingredientsPreference=[]
-    var index= questionIndex()
-	presentQuestion(index)
-	renderQuestion(state, $(".question"))
+	showQuestions()
+	state.currentQuestionIndex = 0;
+	state.userPreferences = [];
+	renderCurrentQuestion()
 })
 
-// <-- loads first question in the DOM -->
+// loads first question in the DOM
 $(document).ready(function(){
-	var index= questionIndex()
-	presentQuestion(index)
-	renderQuestion(state, $(".question"))
+	renderCurrentQuestion()
 })
-
-
-
-
-
-
-
-
-
-
