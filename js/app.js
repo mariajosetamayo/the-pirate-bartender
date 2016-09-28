@@ -54,12 +54,13 @@ var pirateBartender= Object.create(Bartender.prototype)
 var state= {
 	yesBtn: false,
 	ingredientsPreference:[],
+	noPreference: false,
 }
 
 //<-- State modification functions -->
 
 //<-- function that saves the ingredients preferred by the user in the state object -->
-var chosenIngredients = function(state,currentQuestion){
+var chosenIngredients= function(state,currentQuestion){
 	var currentQuestion= window.currentQuestion
 	var questionsArray= window.arrayQuestions
 	if((currentQuestion===questionsArray[0]) && (state.yesBtn)){
@@ -74,6 +75,13 @@ var chosenIngredients = function(state,currentQuestion){
 	}
 	else if((currentQuestion===questionsArray[4])&& (state.yesBtn)){
 		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
+	}
+}
+
+// <-- Function that identifies if user didn't enter anything and makes state.noPreference true -->
+var noDrink= function(state,ingredientsPreference){
+	if(state.ingredientsPreference.length===0){
+		state["noPreference"]=true
 	}
 }
 
@@ -106,6 +114,11 @@ var renderDrink= function(element){
 	element.html(drinkHTML)
 }
 
+var renderError= function(element){
+	var errorHTML= "<h2>So ye got no scurvy pirate taste! Goodby!</h2>"
+	element.html(errorHTML)
+}
+
 // <-- jQuery functions to modify the DOM -->
 
 // <-- event listner for yes button. Calls functions and methods to create a drink and renders content into the DOM  -->
@@ -131,6 +144,12 @@ $(".noBtn").on("click", function(event){
 	var index= questionIndex()
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
+	noDrink(state,state.ingredientsPreference)
+	if((state.noPreference) && (index===window.arrayQuestions.length)){
+		$(".questionContainer").hide()
+        $(".drinkContainer").show()
+		renderError($(".drinkContainer"))
+	}
 })
 
 // <-- event listner for starting again/creating a new drink -->
