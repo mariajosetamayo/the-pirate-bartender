@@ -49,6 +49,19 @@ var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredien
 //<-- Bartender object -->
 var pirateBartender= Object.create(Bartender.prototype)
 
+// <-- cocktail names object -->
+var cocktailNames={
+	adjectives:["Fluffy", "Salty", "Illegal", "Infamous", "Ferocious", "Vicious", "Ruthless"],
+	nouns:["Vessel", "Mate", "Cannon", "Ship", "Maggot", "Ruffian", "Parrot"],
+	nameAdjective: function(){
+			return cocktailNames.adjectives[Math.floor(Math.random()*cocktailNames.adjectives.length)]
+		},
+	nameNoun: function(){
+			return cocktailNames.nouns[Math.floor(Math.random()*cocktailNames.nouns.length)]
+		},
+		
+}
+
 //<-- State object which saves the user's preferences -->
 
 var state= {
@@ -85,6 +98,14 @@ var noDrink= function(state,ingredientsPreference){
 	}
 }
 
+// <-- Function that creates a name for cocktails -->
+var cocktailNameCreator= function(adjective, noun){
+	var cocktailAdjective= adjective
+	var cocktailNoun= noun
+	var cocktailName= cocktailAdjective+ " " +cocktailNoun
+	return cocktailName
+}
+
 // <-- Function to create an array of questions and determine the current question -->
 var presentQuestion = function(questionIndex){
     window.arrayQuestions = []
@@ -114,6 +135,12 @@ var renderDrink= function(element){
 	element.html(drinkHTML)
 }
 
+// <-- Function to render the drink's name -->
+var renderDrinkName= function(element){
+	var drinkNameHTML= "<h2>The"+" "+window.cocktailRandomName+"</h2>"
+	element.html(drinkNameHTML)
+}
+
 var renderError= function(element){
 	var errorHTML= "<h2>So ye got no scurvy pirate taste! Goodby!</h2>"
 	element.html(errorHTML)
@@ -129,12 +156,14 @@ $(".yesBtn").on("click", function(event){
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 	chosenIngredients(state,presentQuestion(index-1))
-	window.pirateDrink = pirateBartender.createDrink(state.ingredientsPreference)
-	console.log("drink", pirateDrink)
+	window.pirateDrink= pirateBartender.createDrink(state.ingredientsPreference)
+	window.cocktailRandomName= cocktailNameCreator(cocktailNames.nameAdjective(), cocktailNames.nameNoun()) 
+	console.log("drink", window.cocktailRandomName)
 	if(index===window.arrayQuestions.length){
 		$(".questionContainer").hide()
         $(".drinkContainer").show()
         renderDrink($(".drinkIngredients"))
+        renderDrinkName($(".drinkName"))
 	}
 })
 
