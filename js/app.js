@@ -7,10 +7,6 @@ var Ingredients= function(ingredients){
 	this.ingredients = ingredients
 }
 
-var Pantry = function(availableIngredients){
-	this.availableIngredients = availableIngredients
-}
-
 var Bartender= function(pirate){
 	this.pirate = pirate
 }
@@ -41,7 +37,7 @@ var sweetIngredients= new Ingredients(["sugar cube", "spoonful of honey", "splas
 var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "cherry on top"])
 
 // Pantry objects
-var pantryIngredients= new Pantry([strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients])
+var pantryIngredients = [strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients];
 
 // Bartender object
 var pirateBartender= Object.create(Bartender.prototype)
@@ -64,11 +60,13 @@ var cocktailNames = {
 
 // method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink
 Bartender.prototype.createDrink= function(state){
-//	state.userPreferences // [1, 3]
+	console.log("Making drink")
+
 	var drink = state.userPreferences.map(function(index){
 		var ingredientCategory = pantryIngredients[index] // ["slice of orange", "dash of cassis", "cherry on top"]
 		return ingredientCategory[Math.floor(Math.random()*ingredientCategory.length)]
 	})
+	console.log(drink);
 	return drink
 }
 
@@ -144,8 +142,6 @@ userChosePreference = function(){
 		renderCurrentQuestion(state)
 	}
 	if(state.currentQuestionIndex === arrayQuestions.length){
-		console.log("Making drink")
-		console.log(state.userPreferences)
 		makeDrink()
 	}
 }
