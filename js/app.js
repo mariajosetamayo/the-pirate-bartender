@@ -87,15 +87,15 @@ var noDrink= function(state,ingredientsPreference){
 
 // <-- Function to create an array of questions and determine the current question -->
 var presentQuestion = function(questionIndex){
-    window.arrayQuestions = []
-    window.arrayQuestions.push(question1.question, question2.question, question3.question, question4.question, question5.question)
-    window.currentQuestion = arrayQuestions[questionIndex]
+    	window.arrayQuestions = []
+    	window.arrayQuestions.push(question1.question, question2.question, question3.question, question4.question, question5.question)
+    	window.currentQuestion = arrayQuestions[questionIndex]
 }
 
 // <-- Counter function to keep track of question number -->
 var questionIndex = (function () {
-    window.counter = -1;
-    return function () {return counter += 1;}
+    	window.counter = -1;
+    	return function () {return counter += 1;}
 })();
 
 // <-- Render content in the DOM -->
@@ -133,8 +133,8 @@ $(".yesBtn").on("click", function(event){
 	console.log("drink", pirateDrink)
 	if(index===window.arrayQuestions.length){
 		$(".questionContainer").hide()
-        $(".drinkContainer").show()
-        renderDrink($(".drinkIngredients"))
+       		$(".drinkContainer").show()
+        	renderDrink($(".drinkIngredients"))
 	}
 })
 
@@ -147,7 +147,7 @@ $(".noBtn").on("click", function(event){
 	noDrink(state,state.ingredientsPreference)
 	if((state.noPreference) && (index===window.arrayQuestions.length)){
 		$(".questionContainer").hide()
-        $(".drinkContainer").show()
+        	$(".drinkContainer").show()
 		renderError($(".drinkContainer"))
 	}
 })
@@ -155,10 +155,10 @@ $(".noBtn").on("click", function(event){
 // <-- event listner for starting again/creating a new drink -->
 $(".drinkContainer").on("click","button", function(){
 	$(".questionContainer").show()
-    $(".drinkContainer").hide()
-    window.counter=-1
-    state.ingredientsPreference=[]
-    var index= questionIndex()
+    	$(".drinkContainer").hide()
+   	window.counter=-1
+    	state.ingredientsPreference=[]
+    	var index= questionIndex()
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 })
