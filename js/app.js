@@ -46,10 +46,10 @@ var pirateBartender= Object.create(Bartender.prototype)
 var cocktailNames = {
 	adjectives: ["Fluffy", "Salty", "Illegal", "Infamous", "Ferocious", "Vicious", "Ruthless"],
 	nouns: ["Vessel", "Mate", "Cannon", "Ship", "Maggot", "Ruffian", "Parrot"],
-	nameAdjective: function(){
+	getRandomAdjective: function(){
 		return cocktailNames.adjectives[Math.floor(Math.random()*cocktailNames.adjectives.length)]
 	},
-	nameNoun: function(){
+	getRandomNoun: function(){
 		return cocktailNames.nouns[Math.floor(Math.random()*cocktailNames.nouns.length)]
 	},
 }
@@ -68,11 +68,8 @@ Bartender.prototype.createDrink= function(state){
 }
 
 // Function that creates a name for cocktails
-var cocktailNameCreator = function(adjective, noun){
-	var cocktailAdjective = adjective;
-	var cocktailNoun = noun;
-	var cocktailName = cocktailAdjective+ " " +cocktailNoun;
-	return cocktailName
+var cocktailNameCreator = function(){
+	return cocktailNames.getRandomAdjective() + " " + cocktailNames.getRandomNoun();
 }
 
 // Function to create an array of questions and determine the current question
@@ -145,10 +142,7 @@ userChosePreference = function(){
 
 var makeDrink = function(){
 	var pirateDrink = pirateBartender.createDrink(state)
-	var cocktailRandomName = cocktailNameCreator(cocktailNames.nameAdjective(), cocktailNames.nameNoun())
-	console.log("Making drink")
-	console.log(pirateDrink)
-	console.log(cocktailRandomName)
+	var cocktailRandomName = cocktailNameCreator()
 	showResults()
 	renderDrink(pirateDrink)
 	renderDrinkName(cocktailRandomName)
