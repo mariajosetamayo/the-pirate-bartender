@@ -141,6 +141,7 @@ var renderDrinkName= function(element){
 	element.html(drinkNameHTML)
 }
 
+// <-- Function to render error -->
 var renderError= function(element){
 	var errorHTML= "<h2>So ye got no scurvy pirate taste! Goodby!</h2>"
 	element.html(errorHTML)
