@@ -1,10 +1,3 @@
-// Object constructors
-var Question= function(question){
-	this.question = question
-}
-
-
-
 var Bartender= function(pirate){
 	this.pirate = pirate
 }
@@ -18,14 +11,13 @@ var state= {
 	userPreferences: []
 }
 
-// Question Objects
-var question1 = "Do ye like yer drinks strong?"
-var question2 = "Do ye like it with a salty tang?"
-var question3 = "Are ye a lubber who likes it bitter?"
-var question4 = "Would ye like a bit of sweetness with yer poison?"
-var question5 = "Are ye one for a fruity finish?"
-var arrayQuestions = []
-arrayQuestions.push(question1, question2, question3, question4, question5);
+var arrayQuestions = [
+	"Do ye like yer drinks strong?",
+	"Do ye like it with a salty tang?",
+	"Are ye a lubber who likes it bitter?",
+	"Would ye like a bit of sweetness with yer poison?",
+	"Are ye one for a fruity finish?"
+]
 
 // Ingredients objects
 var strongIngredients = ["glug of rum", "slug of whisky", "splash of gin"];
@@ -52,12 +44,12 @@ var cocktailNames = {
 	},
 }
 
-
-
 ////////// 2. Bartender functions //////////
 
 // method shared by all bartenders that takes the ingredients from the user's preferences randomly and creates a drink
 Bartender.prototype.createDrink= function(state){
+	if (state.userPreferences.length===0) return ["No ingredients for you"]
+
 	var drink = state.userPreferences.map(function(index){
 		var ingredientCategory = pantryIngredients[index] // ["slice of orange", "dash of cassis", "cherry on top"]
 		return ingredientCategory[Math.floor(Math.random()*ingredientCategory.length)]
