@@ -58,8 +58,7 @@ var cocktailNames={
 		},
 	nameNoun: function(){
 			return cocktailNames.nouns[Math.floor(Math.random()*cocktailNames.nouns.length)]
-		},
-		
+		},		
 }
 
 //<-- State object which saves the user's preferences -->
@@ -76,19 +75,11 @@ var state= {
 var chosenIngredients= function(state,currentQuestion){
 	var currentQuestion= window.currentQuestion
 	var questionsArray= window.arrayQuestions
-	if((currentQuestion===questionsArray[0]) && (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[0])
-	}else if((currentQuestion===questionsArray[1])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[1])
-	}else if((currentQuestion===questionsArray[2])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[2])
-	}
-	else if((currentQuestion===questionsArray[3])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[3])
-	}
-	else if((currentQuestion===questionsArray[4])&& (state.yesBtn)){
-		state.ingredientsPreference.push(pantryIngredients.availableIngredients[4])
-	}
+	questionsArray.map(function (item, index) {
+		if ((currentQuestion===questionsArray[index]) && (state.yesBtn)) {
+			state.ingredientsPreference.push(pantryIngredients.availableIngredients[index])
+		}
+	})
 }
 
 // <-- Function that identifies if user didn't enter anything and makes state.noPreference true -->
@@ -149,6 +140,16 @@ var renderError= function(element){
 
 // <-- jQuery functions to modify the DOM -->
 
+var showResults= function(){
+	$(".questionContainer").hide()
+    $(".drinkContainer").show()
+}
+
+var showQuestions= function(){
+	$(".questionContainer").show()
+    $(".drinkContainer").hide()
+}
+
 // <-- event listner for yes button. Calls functions and methods to create a drink and renders content into the DOM  -->
 $(".yesBtn").on("click", function(event){
 	event.preventDefault()
@@ -159,10 +160,8 @@ $(".yesBtn").on("click", function(event){
 	chosenIngredients(state,presentQuestion(index-1))
 	window.pirateDrink= pirateBartender.createDrink(state.ingredientsPreference)
 	window.cocktailRandomName= cocktailNameCreator(cocktailNames.nameAdjective(), cocktailNames.nameNoun()) 
-	console.log("drink", window.cocktailRandomName)
-	if(index===window.arrayQuestions.length){
-		$(".questionContainer").hide()
-        $(".drinkContainer").show()
+	if(index=== window.arrayQuestions.length){
+  		showResults()
         renderDrink($(".drinkIngredients"))
         renderDrinkName($(".drinkName"))
 	}
@@ -175,17 +174,15 @@ $(".noBtn").on("click", function(event){
 	presentQuestion(index)
 	renderQuestion(state, $(".question"))
 	noDrink(state,state.ingredientsPreference)
-	if((state.noPreference) && (index===window.arrayQuestions.length)){
-		$(".questionContainer").hide()
-        $(".drinkContainer").show()
+	if((state.noPreference) && (index===window.arrayQuestions.length-1)){
+  		showResults()
 		renderError($(".drinkContainer"))
 	}
 })
 
 // <-- event listner for starting again/creating a new drink -->
 $(".drinkContainer").on("click","button", function(){
-	$(".questionContainer").show()
-    $(".drinkContainer").hide()
+ 	showQuestions()
     window.counter=-1
     state.ingredientsPreference=[]
     var index= questionIndex()
