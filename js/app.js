@@ -3,9 +3,7 @@ var Question= function(question){
 	this.question = question
 }
 
-var Ingredients= function(ingredients){
-	this.ingredients = ingredients
-}
+
 
 var Bartender= function(pirate){
 	this.pirate = pirate
@@ -21,23 +19,23 @@ var state= {
 }
 
 // Question Objects
-var question1= new Question("Do ye like yer drinks strong?")
-var question2= new Question("Do ye like it with a salty tang?")
-var question3= new Question("Are ye a lubber who likes it bitter?")
-var question4= new Question("Would ye like a bit of sweetness with yer poison?")
-var question5= new Question("Are ye one for a fruity finish?")
+var question1 = "Do ye like yer drinks strong?"
+var question2 = "Do ye like it with a salty tang?"
+var question3 = "Are ye a lubber who likes it bitter?"
+var question4 = "Would ye like a bit of sweetness with yer poison?"
+var question5 = "Are ye one for a fruity finish?"
 var arrayQuestions = []
-arrayQuestions.push(question1.question, question2.question, question3.question, question4.question, question5.question);
+arrayQuestions.push(question1, question2, question3, question4, question5);
 
 // Ingredients objects
-var strongIngredients= new Ingredients(["glug of rum", "slug of whisky", "splash of gin"])
-var saltyIngredients= new Ingredients(["olive on a stick", "salt-dusted rim", "rasher of bacon"])
-var bitterIngredients= new Ingredients(["shake of bitters", "splash of tonic", "twist of lemon peel"])
-var sweetIngredients= new Ingredients(["sugar cube", "spoonful of honey", "splash of cola"])
-var fruityIngredients= new Ingredients(["slice of orange", "dash of cassis", "cherry on top"])
+var strongIngredients = ["glug of rum", "slug of whisky", "splash of gin"];
+var saltyIngredients = ["olive on a stick", "salt-dusted rim", "rasher of bacon"];
+var bitterIngredients = ["shake of bitters", "splash of tonic", "twist of lemon peel"];
+var sweetIngredients = ["sugar cube", "spoonful of honey", "splash of cola"];
+var fruityIngredients = ["slice of orange", "dash of cassis", "cherry on top"];
 
 // Pantry objects
-var pantryIngredients = [strongIngredients.ingredients, saltyIngredients.ingredients, bitterIngredients.ingredients, sweetIngredients.ingredients, fruityIngredients.ingredients];
+var pantryIngredients = [strongIngredients, saltyIngredients, bitterIngredients, sweetIngredients, fruityIngredients];
 
 // Bartender object
 var pirateBartender= Object.create(Bartender.prototype)
