@@ -1,0 +1,60 @@
+body{
+	background-color: black;
+	color: white;
+	font-family: 'Yatra One', cursive;
+}
+
+.title, .questionContainer, .drinkContainer{
+	text-align: center;
+}
+
+.mainTitle{
+	font-size: 60px;
+	margin-top: 120px;
+}
+
+.subTitle{
+	font-size: 30px;
+}
+
+.drinkContainer{
+	display: none;
+}
+
+.yesBtn, .noBtn{
+	border-radius: 6px;
+    font-size: 25px;
+    display: inline-block;
+    height: 50px;
+    width: 165px;
+    color: white;
+    background-color: #555555;
+}
+
+.otherDrinkBtn{
+	display: inline-block;
+    width: 170px;
+    height: 65px;
+    font-size: 20px;
+    border-radius: 6px;
+    color: white;
+    margin-left: 3%;
+    background-color: #555555;
+}
+
+.drinkIngredients{
+	font-size: 25px;
+	list-style: none;
+}
+
+.drinkContainer{
+    display: none;
+    background-color: maroon;
+    width: 50%;
+    margin: auto;
+    height: 455px;
+}
+
+.drinkName h2{
+    font-size: 30px;
+}
