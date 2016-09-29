@@ -1,0 +1,1 @@
+This is an exercise to practice objects, constructors, and inheritance by creating an application for pirate bartending. The bartender will invent a new and delicious cocktail for you based upon your answers to some simple questions.
